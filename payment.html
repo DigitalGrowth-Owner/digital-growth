@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Verification | Digital Growth</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-[#0a0a0a] min-h-screen flex flex-col items-center p-6 text-center text-white">
+
+    <header class="w-full flex items-center mb-6">
+        <button onclick="window.location.href='withdraw.html'" class="text-gray-400 p-2">
+            <i class="fas fa-arrow-left text-xl"></i>
+        </button>
+    </header>
+
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold text-yellow-500 mb-2">Account Activation</h2>
+        <p class="text-gray-400 text-sm">Pay a one-time fee of ₹99 to unlock withdrawals</p>
+    </div>
+
+    <div class="glass-card p-5 mb-8 border-2 border-yellow-500/30 inline-block rounded-3xl bg-zinc-900/50">
+        <div class="bg-white p-2 rounded-2xl mb-4">
+            <img src="myqr.jpg" alt="Payment QR Code" class="w-60 h-60 rounded-xl mx-auto object-contain">
+        </div>
+        <div class="flex items-center justify-center space-x-2 text-yellow-500 font-bold text-sm mb-1">
+            <i class="fas fa-shield-halved"></i>
+            <span>Secure UPI Payment</span>
+        </div>
+        <p class="text-[10px] text-gray-500 font-medium">Scan the QR code and pay exactly ₹99</p>
+    </div>
+
+    <div class="w-full max-w-sm space-y-6">
+        <div class="text-left">
+            <label class="text-[11px] text-yellow-500/70 font-bold uppercase ml-1 tracking-widest">Enter 12-Digit UTR / Ref No.</label>
+            <div class="relative mt-2">
+                <i class="fas fa-receipt absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                <input type="number" id="utrInput" placeholder="0000 0000 0000" class="input-box w-full p-4 pl-12 rounded-2xl bg-zinc-900 border border-white/10 outline-none focus:border-yellow-500 transition-all text-white font-mono tracking-widest">
+            </div>
+        </div>
+        
+        <button onclick="processActivation()" class="btn-main gold-gradient text-black font-black w-full py-4 rounded-2xl shadow-[0_10px_20px_rgba(234,179,8,0.2)] active:scale-95 transition-transform text-sm uppercase tracking-wider">
+            Verify & Activate Now
+        </button>
+        
+        <div class="flex flex-col items-center space-y-2 pt-4">
+            <div class="flex space-x-4 opacity-40">
+                <i class="fab fa-google-pay text-2xl"></i>
+                <i class="fab fa-amazon-pay text-2xl"></i>
+                <i class="fas fa-credit-card text-xl"></i>
+            </div>
+            <p class="text-[9px] text-gray-600 leading-relaxed max-w-[250px]">
+                By submitting, you agree that your transaction will be verified manually. Incorrect UTR submission may lead to account suspension.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function processActivation() {
+            const utrValue = document.getElementById('utrInput').value;
+
+            // Simple validation: Check if UTR is exactly 12 digits
+            if (utrValue.length === 12) {
+                
+                // CRITICAL LOGIC: Marks the user as Premium/Activated in local storage
+                localStorage.setItem('isPremiumUser', 'true');
+                
+                // Show success message
+                alert("Verification Submitted!\n\nYour UTR: " + utrValue + "\n\nStatus: Pending Verification. Your withdrawal feature will be unlocked shortly.");
+                
+                // Redirect to Dashboard
+                window.location.href = "dashboard.html";
+            } else {
+                // Error message for invalid input
+                alert("Invalid UTR!\n\nPlease enter the correct 12-digit transaction number from your payment app.");
+            }
+        }
+    </script>
+
+</body>
+</html>
