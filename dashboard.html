@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Digital Growth</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-[#0a0a0a]" onload="updateBalance()">
+
+    <header class="p-4 flex justify-between items-center border-b border-white/5">
+        <span class="font-bold text-lg text-yellow-500">Digital Growth</span>
+        <i class="fas fa-user-circle text-2xl text-gray-400"></i>
+    </header>
+    <br><br>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div class="glass-card p-5 text-center cursor-pointer" onclick="window.location.href='tasks.html'">
+                <i class="fas fa-coins text-2xl text-yellow-500 mb-2"></i>
+                <p class="text-xs font-bold">Daily Tasks</p>
+            </div>
+            <div class="glass-card p-5 text-center cursor-pointer" onclick="window.location.href='refer.html'">
+                <i class="fas fa-share-alt text-2xl text-green-400 mb-2"></i>
+                <p class="text-xs font-bold">Refer & Earn</p>
+            </div>
+            <div class="glass-card p-5 text-center cursor-pointer" onclick="window.location.href='withdraw.html'">
+                <i class="fas fa-university text-2xl text-blue-400 mb-2"></i>
+                <p class="text-xs font-bold">Withdraw</p>
+            </div>
+            <div class="glass-card p-5 text-center cursor-pointer" onclick="window.location.href='index.html'">
+                <i class="fas fa-sign-out-alt text-2xl text-red-400 mb-2"></i>
+                <p class="text-xs font-bold">Logout</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    // 1. ਸੇਮ ਉਹੀ Keys ਇੱਥੇ ਵੀ ਪਾਓ
+    const SB_URL = "https://qqasotinjmdknzifbrew.supabase.co";
+    const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFxYXNvdGluam1ka256aWZicmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTg4NzQsImV4cCI6MjA5Mjg5NDg3NH0.MdgrkZU48ARO8LqzWZaCKOUOMxhDVvMdaZHY2fjmOSM";
+    const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+    async function loadUserData() {
+        const phone = localStorage.getItem('user_phone');
+        
+        // ਜੇ ਬੰਦਾ ਲੌਗਇਨ ਨਹੀਂ ਹੈ, ਤਾਂ ਵਾਪਸ ਭੇਜੋ
+        if (!phone) {
+            window.location.href = "index.html";
+            return;
+        }
+
+        // 2. ਡਾਟਾਬੇਸ ਤੋਂ ਤਾਜ਼ਾ ਬੈਲੇਂਸ ਚੱਕੋ
+        let { data: profile, error } = await supabaseClient
+            .from('profiles')
+            .select('*')
+            .eq('phone', phone)
+            .single();
+
+        if (profile) {
+            // 3. ਸਕ੍ਰੀਨ 'ਤੇ ਪੈਸੇ ਦਿਖਾਓ
+            // ਧਿਆਨ ਰੱਖੀਂ ਕਿ ਜਿੱਥੇ ਪੈਸੇ ਦਿਖਦੇ ਹਨ ਉਸਦੀ ID 'balanceDisplay' ਹੋਵੇ
+            const balanceEl = document.getElementById('balanceDisplay');
+            if(balanceEl) {
+                balanceEl.innerText = profile.balance;
+            }
+            
+            // ਪ੍ਰੀਮੀਅਮ ਸਟੇਟਸ ਸੇਵ ਕਰੋ (Withdrawal ਲਈ)
+            localStorage.setItem('isPremiumUser', profile.is_premium);
+        }
+    }
+
+    // ਪੇਜ ਲੋਡ ਹੁੰਦੇ ਹੀ ਡਾਟਾ ਚੱਕੋ
+    window.onload = loadUserData;
+    const SB_URL = "https://qqasotinjmdknzifbrew.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFxYXNvdGluam1ka256aWZicmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTg4NzQsImV4cCI6MjA5Mjg5NDg3NH0.MdgrkZU48ARO8LqzWZaCKOUOMxhDVvMdaZHY2fjmOSM";
+const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+async function loadUserData() {
+    const phone = localStorage.getItem('user_phone');
+    if (!phone) { window.location.href = "index.html"; return; }
+
+    let { data: profile } = await supabaseClient.from('profiles').select('*').eq('phone', phone).single();
+    if (profile) {
+        document.getElementById('mainBal').innerText = profile.balance;
+    }
+}
+window.onload = loadUserData;
+
+</script>
+
+</body>
+</html>
